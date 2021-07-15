@@ -1,0 +1,12 @@
+name: Duels
+version: 1.0
+main: hu.oliverr.duels.Duels
+api-version: 1.17
+authors: [ Oliverr ]
+description: A Duels plugin with unlimited arenas.
+commands:
+  duels:
+    description: Performs the main command.
+permissions:
+  duels.admin:
+    default: op
