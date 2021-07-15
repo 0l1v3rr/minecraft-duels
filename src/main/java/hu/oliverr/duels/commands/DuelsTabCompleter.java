@@ -23,6 +23,9 @@ public class DuelsTabCompleter implements TabCompleter {
             arguments.add("create");
             arguments.add("remove");
             arguments.add("edit");
+            arguments.add("reload");
+            arguments.add("createkit");
+            arguments.add("deletekit");
         }
 
         if(plugin.getConfig().getString("arenas") != null) {

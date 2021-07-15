@@ -59,6 +59,7 @@ public final class Duels extends JavaPlugin {
     @Override
     public void onDisable() {
         setInstance(null);
+        games = null;
     }
 
     public void loadConfig() {
