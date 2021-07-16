@@ -1,4 +1,4 @@
-package hu.oliverr.duels.invenotry;
+package hu.oliverr.duels.inventory;
 
 import hu.oliverr.duels.Duels;
 import hu.oliverr.duels.utility.Chat;

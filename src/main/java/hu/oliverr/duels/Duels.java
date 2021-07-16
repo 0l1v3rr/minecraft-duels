@@ -3,7 +3,7 @@ package hu.oliverr.duels;
 import hu.oliverr.duels.commands.DuelsCommand;
 import hu.oliverr.duels.commands.DuelsTabCompleter;
 import hu.oliverr.duels.game.Game;
-import hu.oliverr.duels.invenotry.InventoryEvent;
+import hu.oliverr.duels.inventory.InventoryEvent;
 import hu.oliverr.duels.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -2,7 +2,7 @@ package hu.oliverr.duels.commands;
 
 import hu.oliverr.duels.Duels;
 import hu.oliverr.duels.game.Game;
-import hu.oliverr.duels.invenotry.EditInventory;
+import hu.oliverr.duels.inventory.EditInventory;
 import hu.oliverr.duels.kits.AddKit;
 import hu.oliverr.duels.kits.CreateKit;
 import hu.oliverr.duels.utility.Chat;
