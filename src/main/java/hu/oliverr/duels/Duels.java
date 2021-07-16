@@ -4,8 +4,7 @@ import hu.oliverr.duels.commands.DuelsCommand;
 import hu.oliverr.duels.commands.DuelsTabCompleter;
 import hu.oliverr.duels.game.Game;
 import hu.oliverr.duels.invenotry.InventoryEvent;
-import hu.oliverr.duels.listeners.OnDamage;
-import hu.oliverr.duels.listeners.OnJoin;
+import hu.oliverr.duels.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,6 +29,7 @@ public final class Duels extends JavaPlugin {
     public void addToGame(String name, Game game) { if(!games.containsKey(name)) games.put(name, game); }
     public void removeFromGame(String name) { if(games.containsKey(name)) games.remove(name); }
     public Game getGame(String name) { return games.get(name); }
+    public Map<String, Game> getGames() { return games; }
 
     private final File messagesFile = new File(getDataFolder(), "messages.yml");
     public File getMessagesFile() { return messagesFile; }
@@ -48,6 +48,11 @@ public final class Duels extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryEvent(), this);
         Bukkit.getPluginManager().registerEvents(new OnJoin(), this);
         Bukkit.getPluginManager().registerEvents(new OnDamage(), this);
+        Bukkit.getPluginManager().registerEvents(new SignChange(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerInteract(), this);
+        Bukkit.getPluginManager().registerEvents(new OnDrop(), this);
+        Bukkit.getPluginManager().registerEvents(new HungerChange(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerDeath(), this);
 
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"SkyPvP"+ChatColor.DARK_GRAY+"] "+ChatColor.AQUA+"+-------------------------------------+");
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"SkyPvP"+ChatColor.DARK_GRAY+"] "+ChatColor.DARK_AQUA+""+ChatColor.BOLD+"Duels");

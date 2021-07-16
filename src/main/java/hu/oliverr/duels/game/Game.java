@@ -1,6 +1,7 @@
 package hu.oliverr.duels.game;
 
 import hu.oliverr.duels.Duels;
+import hu.oliverr.duels.kits.AddKit;
 import hu.oliverr.duels.utility.Chat;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -8,6 +9,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ public class Game {
 
     private final Duels plugin = Duels.getInstance();
     private final Chat chat = new Chat();
+    private final AddKit addKit = new AddKit();
 
     private String displayName;
     private Location firstPlayerSpawn;
@@ -25,11 +28,11 @@ public class Game {
     private boolean fallDamage;
     private boolean hunger;
 
-    private boolean isStarted;
-    private Set<Player> playersInGame;
-    private Set<Player> spectators;
+    private boolean isStarted = false;
+    private Set<Player> playersInGame = new HashSet<>();
+    private Set<Player> spectators = new HashSet<>();
 
-    private int lobbyCountdown = 10;
+    private int lobbyCountdown = 11;
 
     public Game() {
 
@@ -70,7 +73,7 @@ public class Game {
         if(playersInGame.size() == 1)
             if(firstPlayerSpawn != null)
                 player.teleport(firstPlayerSpawn);
-        else if(playersInGame.size() == 2)
+        else
             if(secondPlayerSpawn != null)
                 player.teleport(secondPlayerSpawn);
 
@@ -91,7 +94,7 @@ public class Game {
         if(playersInGame.contains(player)) {
             playersInGame.remove(player);
             if(isStarted && playersInGame.size() == 1) {
-                playersInGame.forEach(this::playerWin);
+                playersInGame.forEach(player1 -> playerWin(player1));
             }
         }
         if(spectators.contains(player)) spectators.remove(player);
@@ -120,7 +123,7 @@ public class Game {
                         }
                     } else {
                         this.cancel();
-                        lobbyCountdown = 10;
+                        lobbyCountdown = 11;
                     }
                 } else {
                     gameStart();
@@ -129,6 +132,7 @@ public class Game {
                 }
             }
         }.runTaskTimer(plugin, 0, 20);
+        lobbyCountdown = 11;
     }
 
     public void gameStart() {
@@ -136,6 +140,7 @@ public class Game {
             isStarted = true;
             int n = 1;
             for(Player p : playersInGame) {
+                addKit.addKit(p, starterKit);
                 if(n == 1 && firstPlayerSpawn != null) p.teleport(firstPlayerSpawn);
                 if(n == 2 && secondPlayerSpawn != null) p.teleport(secondPlayerSpawn);
                 n++;
@@ -146,10 +151,7 @@ public class Game {
 
     public void playerWin(Player player) {
         sendMessageToEveryInGamePlayer(Objects.requireNonNull(plugin.getMessagesConfig().getString("win-message")).replace("{PLAYER}", player.getName()));
-    }
-
-    public void playerDeath(Player player) {
-        switchToSpectator(player);
+        leavePlayer(player);
     }
 
     public void sendMessageToEveryInGamePlayer(String msg) {

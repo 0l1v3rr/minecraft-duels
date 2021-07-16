@@ -12,6 +12,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class DuelsCommand implements CommandExecutor {
 
     private final Duels plugin = Duels.getInstance();
@@ -164,6 +166,20 @@ public class DuelsCommand implements CommandExecutor {
                 plugin.getConfig().set("kits."+args[1].toLowerCase(), null);
                 plugin.saveConfig();
                 chat.sendMessage(player, plugin.getMessagesConfig().getString("kit-deleted"));
+                return false;
+            }
+
+            if(args[0].equalsIgnoreCase("leave")) {
+                AtomicBoolean notInGame = new AtomicBoolean(false);
+                plugin.getGames().forEach((gameName, game) -> {
+                    if(game.getPlayersInGame().contains(player)) {
+                        game.leavePlayer(player);
+                        chat.sendMessage(player, plugin.getMessagesConfig().getString("leave-success"));
+                        notInGame.set(true);
+                    }
+                });
+
+                if(!notInGame.get()) chat.sendMessage(player, plugin.getMessagesConfig().getString("leave-success"));
                 return false;
             }
 
